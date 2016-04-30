@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.oneguygames.statelistview.StateListView
+        android:id="@+id/stateListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:empty_state_view="@layout/custom_empty_state"
+        />
+
+</RelativeLayout>
