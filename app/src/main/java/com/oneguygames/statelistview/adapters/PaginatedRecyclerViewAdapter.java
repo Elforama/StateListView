@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.oneguygames.statelistview.R;
+import com.oneguygames.statelistview.interfaces.ContentStates;
 import com.oneguygames.statelistview.interfaces.Paginate;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
 /**
  * Created by jonathanmuller on 4/30/16.
  */
-public class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
     private int PAGINATION_THRESHOLD = 10;
     private int itemPosition;
@@ -28,13 +29,13 @@ public class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<Recycl
     public static final int TYPE_PROGRESS = 0;
 
     protected List<T> data = new ArrayList<>();
-
-    private OnSetupViewHolderListener listener;
     private boolean hasHeader = false;
+    private ContentStates listener;
 
-    public PaginatedRecyclerViewAdapter(final Paginate paginate, RecyclerView recyclerView, OnSetupViewHolderListener listener)
+    public PaginatedRecyclerViewAdapter(final Paginate paginate, RecyclerView recyclerView, ContentStates listener)
     {
         this.listener = listener;
+        recyclerView.setAdapter(this);
         final LinearLayoutManager layoutManager = (LinearLayoutManager)recyclerView.getLayoutManager();
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
@@ -69,6 +70,13 @@ public class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<Recycl
                 }
             }
         });
+
+        paginate.onLoadPage();
+
+        if (listener != null)
+        {
+            listener.onShowLoading();
+        }
     }
 
     @Override
@@ -76,7 +84,7 @@ public class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<Recycl
     {
         if (viewType == TYPE_ITEM)
         {
-            return listener.onCreateViewHolder(parent, viewType);
+            return onCreateCustomViewHolder(parent, viewType);
         }
         else if (viewType == TYPE_PROGRESS)
         {
@@ -85,7 +93,7 @@ public class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<Recycl
         }
         else
         {
-            return listener.onCreateViewHolder(parent, viewType);
+            return onCreateCustomViewHolder(parent, viewType);
         }
     }
 
@@ -98,7 +106,7 @@ public class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<Recycl
         }
         else
         {
-            listener.onBindViewHolder(holder, position, data.get(getAdjustedPosition(position)));
+            onBindViewHolder(holder, position, data.get(getAdjustedPosition(position)));
         }
     }
 
@@ -119,6 +127,29 @@ public class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<Recycl
 
     public void insertData(List<T> newData)
     {
+        if (data.isEmpty())
+        {
+            if (newData == null || newData.isEmpty())
+            {
+                if (listener != null)
+                {
+                    listener.onShowEmpty();
+                }
+
+                if (newData == null)
+                {
+                    return;
+                }
+            }
+        }
+        else
+        {
+            if (listener != null)
+            {
+                listener.onShowContent();
+            }
+        }
+
         // If last item is null, remove it as it is used to show the progress spinner
         if (!data.isEmpty() && data.get(data.size() - 1) == null)
         {
@@ -152,6 +183,9 @@ public class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<Recycl
         return hasHeader ? data.size() + 1 : data.size();
     }
 
+    public abstract RecyclerView.ViewHolder onCreateCustomViewHolder(ViewGroup parent, int viewType);
+    public abstract void onBindViewHolder(RecyclerView.ViewHolder holder, int position, Object data);
+
     public static class ProgressViewHolder extends RecyclerView.ViewHolder
     {
         public ProgressBar progressBar;
@@ -161,11 +195,5 @@ public class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<Recycl
             super(itemView);
             progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
         }
-    }
-
-    public interface OnSetupViewHolderListener
-    {
-        RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType);
-        void onBindViewHolder(RecyclerView.ViewHolder holder, int position, Object data);
     }
 }

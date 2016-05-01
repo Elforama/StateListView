@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.oneguygames.statelistview.adapters.PaginatedRecyclerViewAdapter;
+import com.oneguygames.statelistview.adapters.PaginatedStateListViewAdapter;
+import com.oneguygames.statelistview.interfaces.OnSetupViewHolderListener;
 import com.oneguygames.statelistview.viewholders.HeaderViewHolder;
 import com.oneguygames.statelistview.viewholders.ListItemViewHolder;
 
@@ -19,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
     private static final String TAG = "MainActivity";
     private StateListView stateListView;
     private static FakeDataPresenter presenter;
-    private PaginatedRecyclerViewAdapter<String> adapter;
+    private PaginatedStateListViewAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,15 +30,14 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
         setContentView(R.layout.activity_main);
 
         stateListView = (StateListView)findViewById(R.id.stateListView);
-        stateListView.showLoading();
 
         if (presenter == null)
         {
             presenter = new FakeDataPresenter();
         }
 
-        adapter = new PaginatedRecyclerViewAdapter<>(presenter, stateListView.getRecyclerView(),
-                new PaginatedRecyclerViewAdapter.OnSetupViewHolderListener()
+        adapter = new PaginatedStateListViewAdapter<>(presenter, stateListView,
+                new OnSetupViewHolderListener()
         {
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
@@ -67,8 +68,6 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
             }
         });
         adapter.enableHeader(true);
-
-        stateListView.getRecyclerView().setAdapter(adapter);
         presenter.onLoadPage();
     }
 
@@ -104,12 +103,11 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
     {
         Log.d(TAG, "onUpdateView() called with: " + "data = [" + data + "]");
         adapter.insertData(data);
-        stateListView.showContent();
     }
 
     @Override
     public void onShowError(String error)
     {
-        stateListView.showError();
+        stateListView.onShowError();
     }
 }

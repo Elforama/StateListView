@@ -2,7 +2,6 @@ package com.oneguygames.statelistview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.StyleRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,10 +11,12 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.oneguygames.statelistview.interfaces.ContentStates;
+
 /**
  * Created by jonathanmuller on 4/29/16.
  */
-public class StateListView extends LinearLayout
+public class StateListView extends LinearLayout implements ContentStates
 {
     private SwipeRefreshLayout contentRefreshLayout;
     private SwipeRefreshLayout emptyRefreshLayout;
@@ -81,7 +82,8 @@ public class StateListView extends LinearLayout
         contentRefreshLayout.setEnabled(false);
     }
 
-    public void showLoading()
+    @Override
+    public void onShowLoading()
     {
         progressLayout.setVisibility(VISIBLE);
         contentRefreshLayout.setVisibility(GONE);
@@ -89,7 +91,8 @@ public class StateListView extends LinearLayout
         errorRefreshLayout.setVisibility(GONE);
     }
 
-    public void showContent()
+    @Override
+    public void onShowContent()
     {
         progressLayout.setVisibility(GONE);
         contentRefreshLayout.setVisibility(VISIBLE);
@@ -97,7 +100,8 @@ public class StateListView extends LinearLayout
         errorRefreshLayout.setVisibility(GONE);
     }
 
-    public void showEmpty()
+    @Override
+    public void onShowEmpty()
     {
         progressLayout.setVisibility(GONE);
         contentRefreshLayout.setVisibility(GONE);
@@ -105,7 +109,8 @@ public class StateListView extends LinearLayout
         errorRefreshLayout.setVisibility(GONE);
     }
 
-    public void showError()
+    @Override
+    public void onShowError()
     {
         progressLayout.setVisibility(GONE);
         contentRefreshLayout.setVisibility(GONE);
