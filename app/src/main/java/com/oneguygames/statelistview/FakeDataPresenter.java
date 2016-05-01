@@ -1,6 +1,7 @@
 package com.oneguygames.statelistview;
 
 import com.oneguygames.statelistview.data.FakeDataSource;
+import com.oneguygames.statelistview.interfaces.Paginate;
 
 import java.util.List;
 

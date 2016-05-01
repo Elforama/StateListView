@@ -1,4 +1,4 @@
-package com.oneguygames.statelistview;
+package com.oneguygames.statelistview.adapters;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+
+import com.oneguygames.statelistview.R;
+import com.oneguygames.statelistview.interfaces.Paginate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +23,14 @@ public class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<Recycl
     private int totalItems;
     private boolean isShowingProgressBar = false;
 
-    private final int TYPE_ITEM = 1;
-    private final int TYPE_PROGRESS = 0;
+    public static final int TYPE_HEADER = 2;
+    public static final int TYPE_ITEM = 1;
+    public static final int TYPE_PROGRESS = 0;
 
-    private List<T> data = new ArrayList<>();
+    protected List<T> data = new ArrayList<>();
 
     private OnSetupViewHolderListener listener;
+    private boolean hasHeader = false;
 
     public PaginatedRecyclerViewAdapter(final Paginate paginate, RecyclerView recyclerView, OnSetupViewHolderListener listener)
     {
@@ -37,34 +42,30 @@ public class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<Recycl
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState)
             {
-                super.onScrollStateChanged(recyclerView, newState);
+
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy)
             {
-                // We only check for for pagination when scrolling down
-                if (dy > 0)
+                // If not loading more items and there are more to load
+                // we check the position of the scroll.
+                // If we are close enough to the bottom, we load more
+                if (!paginate.isLoading() && paginate.hasMore())
                 {
-                    // If not loading more items and there are more to load
-                    // we check the position of the scroll.
-                    // If we are close enough to the bottom, we load more
-                    if (!paginate.isLoading() && paginate.hasMore())
-                    {
-                        itemPosition = layoutManager.findLastVisibleItemPosition();
-                        totalItems = layoutManager.getItemCount();
+                    itemPosition = layoutManager.findLastVisibleItemPosition();
+                    totalItems = layoutManager.getItemCount();
 
-                        if (itemPosition > totalItems - PAGINATION_THRESHOLD)
-                        {
-                            paginate.onLoadPage();
-                        }
-                    }
-                    else if (!isShowingProgressBar && paginate.isLoading()) // show loading spinner
+                    if (itemPosition > totalItems - PAGINATION_THRESHOLD)
                     {
-                        isShowingProgressBar = true;
-                        data.add(null);
-                        notifyItemInserted(data.size() - 1);
+                        paginate.onLoadPage();
                     }
+                }
+                else if (!isShowingProgressBar && paginate.isLoading()) // show loading spinner
+                {
+                    isShowingProgressBar = true;
+                    data.add(null);
+                    notifyItemInserted(data.size() - 1);
                 }
             }
         });
@@ -75,17 +76,16 @@ public class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<Recycl
     {
         if (viewType == TYPE_ITEM)
         {
-            return listener.onCreateViewHolder(parent);
+            return listener.onCreateViewHolder(parent, viewType);
         }
         else if (viewType == TYPE_PROGRESS)
         {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_footer_progress, null);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_footer_progress, parent, false);
             return new ProgressViewHolder(view);
         }
         else
         {
-            // TODO: 4/30/16 add header logic here
-            return null;
+            return listener.onCreateViewHolder(parent, viewType);
         }
     }
 
@@ -98,8 +98,23 @@ public class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<Recycl
         }
         else
         {
-            listener.onBindViewHolder(holder, position, data.get(position));
+            listener.onBindViewHolder(holder, position, data.get(getAdjustedPosition(position)));
         }
+    }
+
+    private boolean isHeader(int position)
+    {
+        return position == 0 && hasHeader;
+    }
+
+    private int getAdjustedPosition(int position)
+    {
+        return (hasHeader && !isHeader(position)) ? position - 1 : position;
+    }
+
+    public void enableHeader(boolean hasHeader)
+    {
+        this.hasHeader = hasHeader;
     }
 
     public void insertData(List<T> newData)
@@ -107,14 +122,15 @@ public class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<Recycl
         // If last item is null, remove it as it is used to show the progress spinner
         if (!data.isEmpty() && data.get(data.size() - 1) == null)
         {
-            int removePos = data.size() - 1;
-            data.remove(removePos);
-            notifyItemRemoved(removePos);
+            data.remove(data.size() - 1);
+            notifyItemRemoved(data.size());
         }
 
         int initialSize = this.data.size();
         this.data.addAll(newData);
         notifyItemRangeInserted(initialSize, newData.size());
+
+        //notifyDataSetChanged();
 
         isShowingProgressBar = false;
     }
@@ -122,14 +138,18 @@ public class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<Recycl
     @Override
     public int getItemViewType(int position)
     {
-        return data.get(position) != null ? TYPE_ITEM : TYPE_PROGRESS;
+        if (isHeader(position))
+        {
+            return TYPE_HEADER;
+        }
+
+        return data.get(getAdjustedPosition(position)) != null ? TYPE_ITEM : TYPE_PROGRESS;
     }
 
     @Override
     public int getItemCount()
     {
-        // TODO: 4/30/16 fix this for headers
-        return data.size();
+        return hasHeader ? data.size() + 1 : data.size();
     }
 
     public static class ProgressViewHolder extends RecyclerView.ViewHolder
@@ -145,7 +165,7 @@ public class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<Recycl
 
     public interface OnSetupViewHolderListener
     {
-        RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent);
+        RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType);
         void onBindViewHolder(RecyclerView.ViewHolder holder, int position, Object data);
     }
 }

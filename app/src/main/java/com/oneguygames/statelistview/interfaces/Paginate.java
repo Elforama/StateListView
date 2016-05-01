@@ -1,4 +1,4 @@
-package com.oneguygames.statelistview;
+package com.oneguygames.statelistview.interfaces;
 
 /**
  * Created by jonathanmuller on 4/30/16.

@@ -1,10 +1,13 @@
-package com.oneguygames.statelistview;
+package com.oneguygames.statelistview.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.oneguygames.statelistview.R;
+import com.oneguygames.statelistview.interfaces.Paginate;
+import com.oneguygames.statelistview.viewholders.ListItemViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;

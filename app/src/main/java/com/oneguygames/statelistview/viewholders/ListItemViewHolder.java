@@ -1,12 +1,10 @@
-package com.oneguygames.statelistview;
+package com.oneguygames.statelistview.viewholders;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import com.oneguygames.statelistview.R;
 
 /**
  * Created by jonathanmuller on 4/30/16.
