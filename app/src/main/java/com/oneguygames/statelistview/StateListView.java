@@ -74,8 +74,8 @@ public class StateListView extends LinearLayout implements ContentStates
         emptyStateView = inflate(getContext(), layoutId, null);
         emptyStateContainer.addView(emptyStateView);
 
-//        errorStateView = inflate(getContext(), layoutId, null);
-//        errorRefreshLayout.addView(errorStateView);
+        errorStateView = inflate(getContext(), layoutId, null);
+        errorStateContainer.addView(errorStateView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -116,6 +116,11 @@ public class StateListView extends LinearLayout implements ContentStates
         contentRefreshLayout.setVisibility(GONE);
         emptyRefreshLayout.setVisibility(GONE);
         errorRefreshLayout.setVisibility(VISIBLE);
+    }
+
+    public void setAdapter(RecyclerView.Adapter adapter)
+    {
+        recyclerView.setAdapter(adapter);
     }
 
     public RecyclerView getRecyclerView()
