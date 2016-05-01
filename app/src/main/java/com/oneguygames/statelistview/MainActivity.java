@@ -2,17 +2,20 @@ package com.oneguygames.statelistview;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements FakeDataPresenter.OnDataListener
 {
-
     private static final String TAG = "MainActivity";
     private StateListView stateListView;
     private static FakeDataPresenter presenter;
-    private PaginatedStateListViewAdapter adapter;
+    private PaginatedRecyclerViewAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,7 +31,22 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
             presenter = new FakeDataPresenter();
         }
 
-        adapter = new PaginatedStateListViewAdapter(presenter, stateListView.getRecyclerView());
+        adapter = new PaginatedRecyclerViewAdapter<>(presenter, stateListView.getRecyclerView(),
+                new PaginatedRecyclerViewAdapter.OnSetupViewHolderListener()
+        {
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent)
+            {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, null);
+                return new ListItemViewHolder(view);
+            }
+
+            @Override
+            public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, Object data)
+            {
+                ((ListItemViewHolder)holder).load((String)data);
+            }
+        });
         stateListView.getRecyclerView().setAdapter(adapter);
         presenter.onLoadPage();
     }
@@ -64,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
     public void onUpdateView(List<String> data)
     {
         Log.d(TAG, "onUpdateView() called with: " + "data = [" + data + "]");
-        adapter.addData(data);
+        adapter.insertData(data);
         stateListView.showContent();
     }
 

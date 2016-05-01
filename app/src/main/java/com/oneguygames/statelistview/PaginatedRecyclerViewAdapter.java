@@ -13,19 +13,23 @@ import java.util.List;
 /**
  * Created by jonathanmuller on 4/30/16.
  */
-public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+public class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
     private int PAGINATION_THRESHOLD = 10;
     private int itemPosition;
     private int totalItems;
+    private boolean isShowingProgressBar = false;
 
     private final int TYPE_ITEM = 1;
     private final int TYPE_PROGRESS = 0;
 
     private List<T> data = new ArrayList<>();
 
-    public PaginatedRecyclerViewAdapter(final Paginate paginate, RecyclerView recyclerView)
+    private OnSetupViewHolderListener listener;
+
+    public PaginatedRecyclerViewAdapter(final Paginate paginate, RecyclerView recyclerView, OnSetupViewHolderListener listener)
     {
+        this.listener = listener;
         final LinearLayoutManager layoutManager = (LinearLayoutManager)recyclerView.getLayoutManager();
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
@@ -55,8 +59,9 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
                             paginate.onLoadPage();
                         }
                     }
-                    else if (paginate.isLoading()) // show loading spinner
+                    else if (!isShowingProgressBar && paginate.isLoading()) // show loading spinner
                     {
+                        isShowingProgressBar = true;
                         data.add(null);
                         notifyItemInserted(data.size() - 1);
                     }
@@ -70,7 +75,7 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
     {
         if (viewType == TYPE_ITEM)
         {
-            return onCreateItemViewHolder(parent);
+            return listener.onCreateViewHolder(parent);
         }
         else if (viewType == TYPE_PROGRESS)
         {
@@ -87,15 +92,20 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
     {
-
+        if (holder instanceof ProgressViewHolder)
+        {
+            // Nothing to do here
+        }
+        else
+        {
+            listener.onBindViewHolder(holder, position, data.get(position));
+        }
     }
-
-    public abstract RecyclerView.ViewHolder onCreateItemViewHolder(ViewGroup parent);
 
     public void insertData(List<T> newData)
     {
         // If last item is null, remove it as it is used to show the progress spinner
-        if (data.get(data.size() - 1) == null)
+        if (!data.isEmpty() && data.get(data.size() - 1) == null)
         {
             int removePos = data.size() - 1;
             data.remove(removePos);
@@ -105,12 +115,21 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
         int initialSize = this.data.size();
         this.data.addAll(newData);
         notifyItemRangeInserted(initialSize, newData.size());
+
+        isShowingProgressBar = false;
     }
 
     @Override
     public int getItemViewType(int position)
     {
         return data.get(position) != null ? TYPE_ITEM : TYPE_PROGRESS;
+    }
+
+    @Override
+    public int getItemCount()
+    {
+        // TODO: 4/30/16 fix this for headers
+        return data.size();
     }
 
     public static class ProgressViewHolder extends RecyclerView.ViewHolder
@@ -122,5 +141,11 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
             super(itemView);
             progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
         }
+    }
+
+    public interface OnSetupViewHolderListener
+    {
+        RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent);
+        void onBindViewHolder(RecyclerView.ViewHolder holder, int position, Object data);
     }
 }
