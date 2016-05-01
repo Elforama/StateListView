@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
             }
         });
         adapter.enableHeader(true);
-        presenter.onLoadPage();
     }
 
     @Override

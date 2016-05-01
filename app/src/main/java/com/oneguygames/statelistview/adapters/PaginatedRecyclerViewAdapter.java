@@ -19,18 +19,25 @@ import java.util.List;
  */
 public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
-    private int PAGINATION_THRESHOLD = 10;
-    private int itemPosition;
-    private int totalItems;
-    private boolean isShowingProgressBar = false;
+    //============================================================
+    // Variables
+    //============================================================
 
     public static final int TYPE_HEADER = 2;
     public static final int TYPE_ITEM = 1;
     public static final int TYPE_PROGRESS = 0;
 
-    protected List<T> data = new ArrayList<>();
+    private int paginationThreshold = 10;
+    private int itemPosition;
+    private int totalItems;
+    private boolean isShowingProgressBar = false;
     private boolean hasHeader = false;
     private ContentStates listener;
+    protected List<T> data = new ArrayList<>();
+
+    //============================================================
+    // Constructors
+    //============================================================
 
     public PaginatedRecyclerViewAdapter(final Paginate paginate, RecyclerView recyclerView, ContentStates listener)
     {
@@ -57,7 +64,7 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
                     itemPosition = layoutManager.findLastVisibleItemPosition();
                     totalItems = layoutManager.getItemCount();
 
-                    if (itemPosition > totalItems - PAGINATION_THRESHOLD)
+                    if (itemPosition > totalItems - paginationThreshold)
                     {
                         paginate.onLoadPage();
                     }
@@ -78,6 +85,10 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
             listener.onShowLoading();
         }
     }
+
+    //============================================================
+    // Adapter Overridden Methods
+    //============================================================
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
@@ -110,6 +121,27 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
         }
     }
 
+    @Override
+    public int getItemViewType(int position)
+    {
+        if (isHeader(position))
+        {
+            return TYPE_HEADER;
+        }
+
+        return data.get(getAdjustedPosition(position)) != null ? TYPE_ITEM : TYPE_PROGRESS;
+    }
+
+    @Override
+    public int getItemCount()
+    {
+        return hasHeader ? data.size() + 1 : data.size();
+    }
+
+    //============================================================
+    // Public Methods
+    //============================================================
+
     private boolean isHeader(int position)
     {
         return position == 0 && hasHeader;
@@ -119,6 +151,10 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
     {
         return (hasHeader && !isHeader(position)) ? position - 1 : position;
     }
+
+    //============================================================
+    // Private Methods
+    //============================================================
 
     public void enableHeader(boolean hasHeader)
     {
@@ -139,6 +175,13 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
                 if (newData == null)
                 {
                     return;
+                }
+            }
+            else
+            {
+                if (listener != null)
+                {
+                    listener.onShowContent();
                 }
             }
         }
@@ -166,25 +209,16 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
         isShowingProgressBar = false;
     }
 
-    @Override
-    public int getItemViewType(int position)
-    {
-        if (isHeader(position))
-        {
-            return TYPE_HEADER;
-        }
-
-        return data.get(getAdjustedPosition(position)) != null ? TYPE_ITEM : TYPE_PROGRESS;
-    }
-
-    @Override
-    public int getItemCount()
-    {
-        return hasHeader ? data.size() + 1 : data.size();
-    }
+    //============================================================
+    // Abstract Methods
+    //============================================================
 
     public abstract RecyclerView.ViewHolder onCreateCustomViewHolder(ViewGroup parent, int viewType);
     public abstract void onBindViewHolder(RecyclerView.ViewHolder holder, int position, Object data);
+
+    //============================================================
+    // View Holders
+    //============================================================
 
     public static class ProgressViewHolder extends RecyclerView.ViewHolder
     {
