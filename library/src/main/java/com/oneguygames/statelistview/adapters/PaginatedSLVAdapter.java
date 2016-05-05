@@ -27,7 +27,7 @@ public class PaginatedSLVAdapter<T> extends PaginatedRVAdapter<T>
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, Object data)
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, T data)
     {
         listener.onBindViewHolder(holder, position, data);
     }

@@ -42,7 +42,7 @@ public class FakeDataPresenter implements Paginate
             {
                 if (view != null)
                 {
-                    view.onUpdateView(data);
+                    view.onUpdateView(null);
                 }
                 hasMoreData = true;
                 isLoadingPage = false;

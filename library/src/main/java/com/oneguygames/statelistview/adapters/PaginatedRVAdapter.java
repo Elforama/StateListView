@@ -36,23 +36,23 @@ public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<Recycle
     private boolean isShowingProgressBar = false;
     private boolean hasHeader = false;
     private ContentStates listener;
-    protected List<T> data = new ArrayList<>();
+    private List<T> data = new ArrayList<>();
 
     //============================================================
     // Constructors
     //============================================================
 
-    public PaginatedRVAdapter(Paginate paginate, RecyclerView recyclerView)
+    public PaginatedRVAdapter(RecyclerView recyclerView, Paginate paginate)
     {
-        init(paginate, recyclerView, null);
+        init(recyclerView, paginate, null);
     }
 
     public PaginatedRVAdapter(final Paginate paginate, RecyclerView recyclerView, ContentStates listener)
     {
-        init(paginate, recyclerView, listener);
+        init(recyclerView, paginate, listener);
     }
 
-    private void init(final Paginate paginate, RecyclerView recyclerView, ContentStates listener)
+    private void init(RecyclerView recyclerView, final Paginate paginate, ContentStates listener)
     {
         this.listener = listener;
 
@@ -198,6 +198,20 @@ public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<Recycle
         this.hasHeader = hasHeader;
     }
 
+    public void refreshHeader()
+    {
+        if (hasHeader)
+        {
+            notifyItemChanged(0);
+        }
+    }
+
+    public void updateDataAtPosition(T data, int position)
+    {
+        this.data.set(position, data);
+        notifyItemChanged(getAdjustedPosition(position));
+    }
+
     public void insertData(List<T> newData)
     {
         if (data.isEmpty())
@@ -247,8 +261,21 @@ public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<Recycle
     // Abstract Methods
     //============================================================
 
+    /**
+     * Implement this method to create teh viewholders for the item viewholders and header viewholder
+     * @param parent
+     * @param viewType
+     * @return
+     */
     public abstract RecyclerView.ViewHolder onCreateCustomViewHolder(ViewGroup parent, int viewType);
-    public abstract void onBindViewHolder(RecyclerView.ViewHolder holder, int position, Object data);
+
+    /**
+     * Allows binding of custom viewholders with the provided data
+     * @param holder
+     * @param position
+     * @param data from the list to fill view with
+     */
+    public abstract void onBindViewHolder(RecyclerView.ViewHolder holder, int position, T data);
 
     //============================================================
     // View Holders

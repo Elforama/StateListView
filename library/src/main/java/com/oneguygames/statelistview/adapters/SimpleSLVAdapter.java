@@ -10,11 +10,11 @@ import com.oneguygames.statelistview.interfaces.Paginate;
 /**
  * Created by jonathanmuller on 4/30/16.
  */
-public class SimpleStateListViewAdapter<T> extends PaginatedSLVAdapter<T>
+public class SimpleSLVAdapter<T> extends PaginatedSLVAdapter<T>
 {
     private OnSetupVHListener listener;
 
-    public SimpleStateListViewAdapter(Paginate paginate, StateListView stateListView, OnSetupVHListener listener)
+    public SimpleSLVAdapter(Paginate paginate, StateListView stateListView, OnSetupVHListener listener)
     {
         super(paginate, stateListView, null);
         stateListView.getRecyclerView().setAdapter(this);
@@ -28,7 +28,7 @@ public class SimpleStateListViewAdapter<T> extends PaginatedSLVAdapter<T>
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, Object data)
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, T data)
     {
         listener.onBindViewHolder(holder, position, data);
     }

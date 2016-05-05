@@ -38,8 +38,7 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
             presenter = new FakeDataPresenter();
         }
 
-        adapter = new PaginatedSLVAdapter<>(presenter, stateListView,
-                new OnSetupVHListener()
+        adapter = new PaginatedSLVAdapter<>(presenter, stateListView, new OnSetupVHListener()
         {
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
             }
         });
         adapter.enableHeader(true);
-        stateListView.getRecyclerView().setAdapter(adapter);
+        stateListView.setAdapter(adapter);
         presenter.onLoadPage();
     }
 
