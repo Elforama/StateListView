@@ -10,11 +10,11 @@ import com.oneguygames.statelistview.interfaces.Paginate;
 /**
  * Created by jonathanmuller on 4/30/16.
  */
-public class PaginatedStateListViewAdapter<T> extends PaginatedRecyclerViewAdapter<T>
+public class PaginatedSLVAdapter<T> extends PaginatedRVAdapter<T>
 {
     private OnSetupViewHolderListener listener;
 
-    public PaginatedStateListViewAdapter(Paginate paginate, StateListView stateListView, OnSetupViewHolderListener listener)
+    public PaginatedSLVAdapter(Paginate paginate, StateListView stateListView, OnSetupViewHolderListener listener)
     {
         super(paginate, stateListView.getRecyclerView(), stateListView);
         this.listener = listener;

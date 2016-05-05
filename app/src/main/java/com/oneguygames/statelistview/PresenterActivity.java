@@ -3,13 +3,13 @@ package com.oneguygames.statelistview;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.oneguygames.statelistview.interfaces.MvpPresenter;
+import com.oneguygames.statelistview.interfaces.MVPPresenter;
 import com.oneguygames.statelistview.interfaces.MvpView;
 
 /**
  * Created by jonathanmuller on 4/30/16.
  */
-public abstract class PresenterActivity<V extends MvpView, P extends MvpPresenter> extends Activity
+public abstract class PresenterActivity<V extends MvpView, P extends MVPPresenter> extends Activity
 {
     protected P presenter;
 

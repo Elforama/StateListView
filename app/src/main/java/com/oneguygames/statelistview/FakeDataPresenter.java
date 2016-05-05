@@ -51,13 +51,13 @@ public class FakeDataPresenter implements Paginate
     }
 
     @Override
-    public boolean isLoading()
+    public boolean isLoadingPage()
     {
         return isLoadingPage;
     }
 
     @Override
-    public boolean hasMore()
+    public boolean hasMorePages()
     {
         return hasMoreData;
     }

@@ -2,14 +2,15 @@ package com.oneguygames.statelistview;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.oneguygames.statelistview.adapters.PaginatedRecyclerViewAdapter;
-import com.oneguygames.statelistview.adapters.PaginatedStateListViewAdapter;
+import com.oneguygames.statelistview.adapters.PaginatedRVAdapter;
+import com.oneguygames.statelistview.adapters.PaginatedSLVAdapter;
 import com.oneguygames.statelistview.interfaces.OnSetupViewHolderListener;
 import com.oneguygames.statelistview.viewholders.HeaderViewHolder;
 import com.oneguygames.statelistview.viewholders.ListItemViewHolder;
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
     private static final String TAG = "MainActivity";
     private StateListView stateListView;
     private static FakeDataPresenter presenter;
-    private PaginatedStateListViewAdapter<String> adapter;
+    private PaginatedSLVAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -30,19 +31,20 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
         setContentView(R.layout.activity_main);
 
         stateListView = (StateListView)findViewById(R.id.stateListView);
+        stateListView.getRecyclerView().setLayoutManager(new GridLayoutManager(this, 3));
 
         if (presenter == null)
         {
             presenter = new FakeDataPresenter();
         }
 
-        adapter = new PaginatedStateListViewAdapter<>(presenter, stateListView,
+        adapter = new PaginatedSLVAdapter<>(presenter, stateListView,
                 new OnSetupViewHolderListener()
         {
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
             {
-                if (viewType == PaginatedRecyclerViewAdapter.TYPE_HEADER)
+                if (viewType == PaginatedRVAdapter.TYPE_HEADER)
                 {
                     View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_header_simple, parent, false);
                     return new HeaderViewHolder(view);
@@ -68,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
             }
         });
         adapter.enableHeader(true);
+        stateListView.getRecyclerView().setAdapter(adapter);
+        presenter.onLoadPage();
     }
 
     @Override

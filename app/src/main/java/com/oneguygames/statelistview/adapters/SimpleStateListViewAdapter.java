@@ -10,7 +10,7 @@ import com.oneguygames.statelistview.interfaces.Paginate;
 /**
  * Created by jonathanmuller on 4/30/16.
  */
-public class SimpleStateListViewAdapter<T> extends PaginatedStateListViewAdapter<T>
+public class SimpleStateListViewAdapter<T> extends PaginatedSLVAdapter<T>
 {
     private OnSetupViewHolderListener listener;
 

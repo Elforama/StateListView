@@ -6,6 +6,6 @@ package com.oneguygames.statelistview.interfaces;
 public interface Paginate
 {
     void onLoadPage();
-    boolean isLoading();
-    boolean hasMore();
+    boolean isLoadingPage();
+    boolean hasMorePages();
 }

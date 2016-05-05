@@ -1,7 +1,9 @@
 package com.oneguygames.statelistview.adapters;
 
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +19,7 @@ import java.util.List;
 /**
  * Created by jonathanmuller on 4/30/16.
  */
-public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
     //============================================================
     // Variables
@@ -26,6 +28,7 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
     public static final int TYPE_HEADER = 2;
     public static final int TYPE_ITEM = 1;
     public static final int TYPE_PROGRESS = 0;
+    private static final String TAG = "PaginatedRVAdapter";
 
     private int paginationThreshold = 10;
     private int itemPosition;
@@ -39,11 +42,25 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
     // Constructors
     //============================================================
 
-    public PaginatedRecyclerViewAdapter(final Paginate paginate, RecyclerView recyclerView, ContentStates listener)
+    public PaginatedRVAdapter(final Paginate paginate, RecyclerView recyclerView, ContentStates listener)
     {
         this.listener = listener;
-        recyclerView.setAdapter(this);
+
         final LinearLayoutManager layoutManager = (LinearLayoutManager)recyclerView.getLayoutManager();
+
+        // Allow footer and header to show as one column if the list is a grid
+        if (layoutManager instanceof GridLayoutManager)
+        {
+            final GridLayoutManager gridLayoutManager = (GridLayoutManager)layoutManager;
+            gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup()
+            {
+                @Override
+                public int getSpanSize(int position)
+                {
+                    return isHeader(position) || isProgressBar(position) ? gridLayoutManager.getSpanCount() : 1;
+                }
+            });
+        }
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
@@ -59,7 +76,7 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
                 // If not loading more items and there are more to load
                 // we check the position of the scroll.
                 // If we are close enough to the bottom, we load more
-                if (!paginate.isLoading() && paginate.hasMore())
+                if (!paginate.isLoadingPage() && paginate.hasMorePages())
                 {
                     itemPosition = layoutManager.findLastVisibleItemPosition();
                     totalItems = layoutManager.getItemCount();
@@ -69,16 +86,14 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
                         paginate.onLoadPage();
                     }
                 }
-                else if (!isShowingProgressBar && paginate.isLoading()) // show loading spinner
+
+                if (!isShowingProgressBar && paginate.isLoadingPage()) // show loading spinner
                 {
                     isShowingProgressBar = true;
-                    data.add(null);
-                    notifyItemInserted(data.size() - 1);
+                    notifyItemInserted(data.size() + (hasHeader ? 1 : 0));
                 }
             }
         });
-
-        paginate.onLoadPage();
 
         if (listener != null)
         {
@@ -113,10 +128,11 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
     {
         if (holder instanceof ProgressViewHolder)
         {
-            // Nothing to do here
+            Log.d(TAG, "onBindViewHolder: progress bar");
         }
         else
         {
+            Log.d(TAG, "onBindViewHolder: other item " + position);
             onBindViewHolder(holder, position, data.get(getAdjustedPosition(position)));
         }
     }
@@ -128,14 +144,20 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
         {
             return TYPE_HEADER;
         }
-
-        return data.get(getAdjustedPosition(position)) != null ? TYPE_ITEM : TYPE_PROGRESS;
+        else if (isProgressBar(position))
+        {
+            return TYPE_PROGRESS;
+        }
+        else
+        {
+            return TYPE_ITEM;
+        }
     }
 
     @Override
     public int getItemCount()
     {
-        return hasHeader ? data.size() + 1 : data.size();
+        return data.size() + (hasHeader ? 1 : 0) + (isShowingProgressBar ? 1 : 0);
     }
 
     //============================================================
@@ -145,6 +167,11 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
     private boolean isHeader(int position)
     {
         return position == 0 && hasHeader;
+    }
+
+    private boolean isProgressBar(int position)
+    {
+        return position == getItemCount() - 1 && isShowingProgressBar;
     }
 
     private int getAdjustedPosition(int position)
@@ -193,20 +220,17 @@ public abstract class PaginatedRecyclerViewAdapter<T> extends RecyclerView.Adapt
             }
         }
 
-        // If last item is null, remove it as it is used to show the progress spinner
-        if (!data.isEmpty() && data.get(data.size() - 1) == null)
+        if (isShowingProgressBar)
         {
-            data.remove(data.size() - 1);
-            notifyItemRemoved(data.size());
+            notifyItemRemoved(getItemCount());
+            isShowingProgressBar = false;
         }
 
-        int initialSize = this.data.size();
+        //int initialSize = this.data.size();
         this.data.addAll(newData);
-        notifyItemRangeInserted(initialSize, newData.size());
-
-        //notifyDataSetChanged();
-
-        isShowingProgressBar = false;
+        //notifyItemRangeInserted(initialSize, newData.size());
+        //layoutManager.scrollToPosition(initialSize + 1);
+        notifyDataSetChanged();
     }
 
     //============================================================
