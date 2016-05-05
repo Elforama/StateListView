@@ -42,7 +42,17 @@ public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<Recycle
     // Constructors
     //============================================================
 
+    public PaginatedRVAdapter(Paginate paginate, RecyclerView recyclerView)
+    {
+        init(paginate, recyclerView, null);
+    }
+
     public PaginatedRVAdapter(final Paginate paginate, RecyclerView recyclerView, ContentStates listener)
+    {
+        init(paginate, recyclerView, listener);
+    }
+
+    private void init(final Paginate paginate, RecyclerView recyclerView, ContentStates listener)
     {
         this.listener = listener;
 

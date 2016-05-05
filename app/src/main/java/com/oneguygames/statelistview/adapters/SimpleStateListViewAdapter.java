@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.oneguygames.statelistview.StateListView;
-import com.oneguygames.statelistview.interfaces.OnSetupViewHolderListener;
+import com.oneguygames.statelistview.interfaces.OnSetupVHListener;
 import com.oneguygames.statelistview.interfaces.Paginate;
 
 /**
@@ -12,9 +12,9 @@ import com.oneguygames.statelistview.interfaces.Paginate;
  */
 public class SimpleStateListViewAdapter<T> extends PaginatedSLVAdapter<T>
 {
-    private OnSetupViewHolderListener listener;
+    private OnSetupVHListener listener;
 
-    public SimpleStateListViewAdapter(Paginate paginate, StateListView stateListView, OnSetupViewHolderListener listener)
+    public SimpleStateListViewAdapter(Paginate paginate, StateListView stateListView, OnSetupVHListener listener)
     {
         super(paginate, stateListView, null);
         stateListView.getRecyclerView().setAdapter(this);

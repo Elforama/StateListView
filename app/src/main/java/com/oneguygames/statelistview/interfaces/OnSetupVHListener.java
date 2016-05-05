@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 /**
  * Created by jonathanmuller on 4/30/16.
  */
-public interface OnSetupViewHolderListener
+public interface OnSetupVHListener
 {
     RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType);
     void onBindViewHolder(RecyclerView.ViewHolder holder, int position, Object data);

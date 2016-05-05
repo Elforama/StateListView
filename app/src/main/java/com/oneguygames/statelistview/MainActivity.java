@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.oneguygames.statelistview.adapters.PaginatedRVAdapter;
 import com.oneguygames.statelistview.adapters.PaginatedSLVAdapter;
-import com.oneguygames.statelistview.interfaces.OnSetupViewHolderListener;
+import com.oneguygames.statelistview.interfaces.OnSetupVHListener;
 import com.oneguygames.statelistview.viewholders.HeaderViewHolder;
 import com.oneguygames.statelistview.viewholders.ListItemViewHolder;
 
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
         }
 
         adapter = new PaginatedSLVAdapter<>(presenter, stateListView,
-                new OnSetupViewHolderListener()
+                new OnSetupVHListener()
         {
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
