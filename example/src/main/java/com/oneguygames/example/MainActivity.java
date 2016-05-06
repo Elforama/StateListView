@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 
 import com.oneguygames.statelistview.StateListView;
 import com.oneguygames.statelistview.adapters.PaginatedRVAdapter;
-import com.oneguygames.statelistview.adapters.PaginatedSLVAdapter;
-import com.oneguygames.statelistview.interfaces.OnSetupVHListener;
 import com.oneguygames.statelistview.viewholders.HeaderViewHolder;
 
 import java.util.List;
@@ -22,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
     private static final String TAG = "MainActivity";
     private StateListView stateListView;
     private static FakeDataPresenter presenter;
-    private PaginatedSLVAdapter<String> adapter;
+    private PaginatedRVAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -31,17 +29,18 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
         setContentView(com.oneguygames.statelistview.R.layout.activity_main);
 
         stateListView = (StateListView)findViewById(com.oneguygames.statelistview.R.id.stateListView);
-        stateListView.getRecyclerView().setLayoutManager(new GridLayoutManager(this, 3));
+        stateListView.getRecyclerView().setLayoutManager(new GridLayoutManager(this, 1));
+        stateListView.getRecyclerView().setLayoutManager(null);
 
         if (presenter == null)
         {
             presenter = new FakeDataPresenter();
         }
 
-        adapter = new PaginatedSLVAdapter<>(presenter, stateListView, new OnSetupVHListener()
+        adapter = new PaginatedRVAdapter<String>(presenter, stateListView.getRecyclerView(), stateListView)
         {
             @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+            public RecyclerView.ViewHolder onCreateCustomViewHolder(ViewGroup parent, int viewType)
             {
                 if (viewType == PaginatedRVAdapter.TYPE_HEADER)
                 {
@@ -56,18 +55,19 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
             }
 
             @Override
-            public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, Object data)
+            public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, String data)
             {
                 if (holder instanceof ListItemViewHolder)
                 {
-                    ((ListItemViewHolder) holder).load((String) data);
+                    ((ListItemViewHolder) holder).load(data);
                 }
                 else
                 {
                     ((HeaderViewHolder) holder).load("Cool Adapter", "Super Cool!");
                 }
             }
-        });
+        };
+
         adapter.enableHeader(true);
         stateListView.setAdapter(adapter);
         presenter.onLoadPage();
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
     public void onUpdateView(List<String> data)
     {
         Log.d(TAG, "onUpdateView() called with: " + "data = [" + data + "]");
-        adapter.insertData(data);
+        adapter.addData(data);
     }
 
     @Override

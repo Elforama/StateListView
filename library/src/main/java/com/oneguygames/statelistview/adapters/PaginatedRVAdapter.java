@@ -56,6 +56,12 @@ public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<Recycle
     {
         this.listener = listener;
 
+        if (recyclerView.getLayoutManager() == null)
+        {
+            Log.e(TAG, "You must to attach a LayoutManager to your RecyclerView");
+            return;
+        }
+
         final LinearLayoutManager layoutManager = (LinearLayoutManager)recyclerView.getLayoutManager();
 
         // Allow footer and header to show as one column if the list is a grid
@@ -72,38 +78,42 @@ public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<Recycle
             });
         }
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+        // Only check for pagination if the paginate listener is passed
+        if (paginate != null)
         {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState)
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
             {
-
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
-            {
-                // If not loading more items and there are more to load
-                // we check the position of the scroll.
-                // If we are close enough to the bottom, we load more
-                if (!paginate.isLoadingPage() && paginate.hasMorePages())
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState)
                 {
-                    itemPosition = layoutManager.findLastVisibleItemPosition();
-                    totalItems = layoutManager.getItemCount();
 
-                    if (itemPosition > totalItems - paginationThreshold)
+                }
+
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy)
+                {
+                    // If not loading more items and there are more to load
+                    // we check the position of the scroll.
+                    // If we are close enough to the bottom, we load more
+                    if (!paginate.isLoadingPage() && paginate.hasMorePages())
                     {
-                        paginate.onLoadPage();
+                        itemPosition = layoutManager.findLastVisibleItemPosition();
+                        totalItems = layoutManager.getItemCount();
+
+                        if (itemPosition > totalItems - paginationThreshold)
+                        {
+                            paginate.onLoadPage();
+                        }
+                    }
+
+                    if (!isShowingProgressBar && paginate.isLoadingPage()) // show loading spinner
+                    {
+                        isShowingProgressBar = true;
+                        notifyItemInserted(data.size() + (hasHeader ? 1 : 0));
                     }
                 }
-
-                if (!isShowingProgressBar && paginate.isLoadingPage()) // show loading spinner
-                {
-                    isShowingProgressBar = true;
-                    notifyItemInserted(data.size() + (hasHeader ? 1 : 0));
-                }
-            }
-        });
+            });
+        }
 
         if (listener != null)
         {
@@ -138,11 +148,11 @@ public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<Recycle
     {
         if (holder instanceof ProgressViewHolder)
         {
-            Log.d(TAG, "onBindViewHolder: progress bar");
+            // nothing to do
         }
         else
         {
-            Log.d(TAG, "onBindViewHolder: other item " + position);
+            // call abstract methods for user to fill custom viewholders
             onBindViewHolder(holder, position, data.get(getAdjustedPosition(position)));
         }
     }
@@ -212,7 +222,51 @@ public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<Recycle
         notifyItemChanged(getAdjustedPosition(position));
     }
 
-    public void insertData(List<T> newData)
+    public void setData(List<T> newData)
+    {
+        if (data.isEmpty())
+        {
+            if (newData == null || newData.isEmpty())
+            {
+                if (listener != null)
+                {
+                    listener.onShowEmpty();
+                }
+
+                if (newData == null)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                if (listener != null)
+                {
+                    listener.onShowContent();
+                }
+            }
+        }
+        else
+        {
+            if (listener != null)
+            {
+                listener.onShowContent();
+            }
+        }
+
+        if (isShowingProgressBar)
+        {
+            isShowingProgressBar = false;
+        }
+
+        //int initialSize = this.data.size();
+        this.data = newData;
+        //notifyItemRangeInserted(initialSize, newData.size());
+        //layoutManager.scrollToPosition(initialSize + 1);
+        notifyDataSetChanged();
+    }
+
+    public void addData(List<T> newData)
     {
         if (data.isEmpty())
         {
