@@ -1,4 +1,4 @@
-package com.oneguygames.statelistview.viewholders;
+package com.oneguygames.example;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

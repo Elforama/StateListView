@@ -9,9 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.oneguygames.statelistview.StateListView;
 import com.oneguygames.statelistview.adapters.PaginatedRVAdapter;
-import com.oneguygames.statelistview.viewholders.HeaderViewHolder;
+import com.oneguygames.statelistview.views.StateListView;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.oneguygames.statelistview;
+package com.oneguygames.statelistview.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.oneguygames.statelistview.R;
 import com.oneguygames.statelistview.interfaces.ContentStates;
 
 /**
