@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
 
         stateListView = (StateListView)findViewById(com.oneguygames.statelistview.R.id.stateListView);
         stateListView.getRecyclerView().setLayoutManager(new GridLayoutManager(this, 1));
-        stateListView.getRecyclerView().setLayoutManager(null);
 
         if (presenter == null)
         {
@@ -67,6 +66,15 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
                 }
             }
         };
+
+        adapter.setOnItemSelectionListener(new PaginatedRVAdapter.OnItemSelectionListener()
+        {
+            @Override
+            public void onItemSelected(int position, Object data, RecyclerView.ViewHolder viewHolder)
+            {
+                Log.d(TAG, "onItemSelected() called with: " + "position = [" + position + "], data = [" + data + "], viewHolder = [" + viewHolder + "]");
+            }
+        });
 
         adapter.enableHeader(true);
         stateListView.setAdapter(adapter);

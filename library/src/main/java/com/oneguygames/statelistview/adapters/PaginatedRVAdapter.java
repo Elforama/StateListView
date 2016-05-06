@@ -37,6 +37,7 @@ public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<Recycle
     private boolean hasHeader = false;
     private ContentStates listener;
     private List<T> data = new ArrayList<>();
+    private OnItemSelectionListener onItemSelectionListener;
 
     //============================================================
     // Constructors
@@ -144,7 +145,7 @@ public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<Recycle
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position)
     {
         if (holder instanceof ProgressViewHolder)
         {
@@ -154,6 +155,24 @@ public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<Recycle
         {
             // call abstract methods for user to fill custom viewholders
             onBindViewHolder(holder, position, data.get(getAdjustedPosition(position)));
+
+            if (!isHeader(position))
+            {
+                holder.itemView.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        if (onItemSelectionListener != null)
+                        {
+                            onItemSelectionListener.onItemSelected(
+                                    position,
+                                    data.get(getAdjustedPosition(position)),
+                                    holder);
+                        }
+                    }
+                });
+            }
         }
     }
 
@@ -181,7 +200,7 @@ public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<Recycle
     }
 
     //============================================================
-    // Public Methods
+    // Private Methods
     //============================================================
 
     private boolean isHeader(int position)
@@ -200,8 +219,13 @@ public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<Recycle
     }
 
     //============================================================
-    // Private Methods
+    // Public Methods
     //============================================================
+
+    public void setOnItemSelectionListener(OnItemSelectionListener listener)
+    {
+        onItemSelectionListener = listener;
+    }
 
     public void enableHeader(boolean hasHeader)
     {
@@ -344,5 +368,14 @@ public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<Recycle
             super(itemView);
             progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
         }
+    }
+
+    //============================================================
+    // Interfaces
+    //============================================================
+
+    public interface OnItemSelectionListener
+    {
+        void onItemSelected(int position, Object data, RecyclerView.ViewHolder viewHolder);
     }
 }
