@@ -76,8 +76,19 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
         });
 
         adapter.enableHeader(true);
+        stateListView.setEmptyStateView(new CustomView(this));
         stateListView.setAdapter(adapter);
         presenter.onLoadPage();
+
+        stateListView.setEmptyStateMessage("Set in code! Totally custom view!");
+        stateListView.setEmptyStateOnClick(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Log.d(TAG, "Clicked!");
+            }
+        });
     }
 
     @Override

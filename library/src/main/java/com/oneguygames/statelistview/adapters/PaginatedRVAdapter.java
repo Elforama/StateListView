@@ -222,6 +222,11 @@ public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<Recycle
     // Public Methods
     //============================================================
 
+    public void setPaginationThreshold(int threshold)
+    {
+        paginationThreshold = threshold;
+    }
+
     public void setOnItemSelectionListener(OnItemSelectionListener listener)
     {
         onItemSelectionListener = listener;

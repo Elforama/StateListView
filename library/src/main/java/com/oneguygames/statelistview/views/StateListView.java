@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -13,12 +14,15 @@ import android.widget.ProgressBar;
 
 import com.oneguygames.statelistview.R;
 import com.oneguygames.statelistview.interfaces.ContentStates;
+import com.oneguygames.statelistview.interfaces.Controllable;
 
 /**
  * Created by jonathanmuller on 4/29/16.
  */
 public class StateListView extends LinearLayout implements ContentStates
 {
+    private static final String TAG = "StateListView";
+
     private SwipeRefreshLayout contentRefreshLayout;
     private SwipeRefreshLayout emptyRefreshLayout;
     private SwipeRefreshLayout errorRefreshLayout;
@@ -31,8 +35,11 @@ public class StateListView extends LinearLayout implements ContentStates
 
     private RecyclerView recyclerView;
 
-    private View emptyStateView;
-    private View errorStateView;
+    private View emptyView;
+    private View errorView;
+
+    private Controllable emptyStateView;
+    private Controllable errorStateView;
 
     public StateListView(Context context)
     {
@@ -70,17 +77,93 @@ public class StateListView extends LinearLayout implements ContentStates
 
         TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.StateListView);
 
-        int layoutId = attributes.getResourceId(R.styleable.StateListView_empty_state_view, R.layout.default_empty_state_view);
-
-        emptyStateView = inflate(getContext(), layoutId, null);
-        emptyStateContainer.addView(emptyStateView);
-
-        errorStateView = inflate(getContext(), layoutId, null);
-        errorStateContainer.addView(errorStateView);
+        setupStates(attributes);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         contentRefreshLayout.setEnabled(false);
+    }
+
+    private void setupStates(TypedArray attributes)
+    {
+        int emptyStateLayoutId = attributes.getResourceId(R.styleable.StateListView_empty_state_view, R.layout.default_empty_state_view);
+
+        if (emptyStateLayoutId != R.layout.default_empty_state_view)
+        {
+            emptyView = inflate(getContext(), emptyStateLayoutId, null);
+            emptyStateContainer.addView(emptyView);
+
+            if (emptyView instanceof Controllable)
+            {
+                emptyStateView = (Controllable)emptyView;
+            }
+        }
+        else
+        {
+            emptyStateView = new StateView(getContext());
+            emptyStateContainer.addView((View)emptyStateView);
+        }
+
+//        int errorStateLayoutId = attributes.getResourceId(R.styleable.StateListView_error_state_view, R.layout.default_error_state_view);
+//
+//        errorView = inflate(getContext(), errorStateLayoutId, null);
+//        errorStateContainer.addView(errorView);
+//
+//        if (errorStateLayoutId != R.layout.default_error_state_view)
+//        {
+//            isCustomErrroState = true;
+//        }
+    }
+
+    public void setEmptyStateMessage(String message)
+    {
+        if (emptyStateView != null)
+        {
+            emptyStateView.setMessage(message);
+        }
+        else
+        {
+            Log.e(TAG, "Can not set message, empty state view doesn't implement Controllable");
+        }
+    }
+
+    public void setEmptyStateImage(int drawableRes)
+    {
+        if (emptyStateView != null)
+        {
+            emptyStateView.setImage(drawableRes);
+        }
+        else
+        {
+            Log.e(TAG, "Can not set image, empty state view doesn't implement Controllable");
+        }
+    }
+
+    public void setEmptyStateOnClick(OnClickListener onClickListener)
+    {
+        if (emptyStateView != null)
+        {
+            emptyStateView.setClickListener(onClickListener);
+        }
+        else
+        {
+            Log.e(TAG, "Can not set a click listener, empty state view doesn't implement Controllable");
+        }
+    }
+
+    public void setEmptyStateView(View view)
+    {
+        if (emptyStateContainer.getChildCount() != 0)
+        {
+            emptyStateContainer.removeAllViews();
+        }
+
+        emptyStateContainer.addView(view);
+
+        if (view instanceof Controllable)
+        {
+            emptyStateView = (Controllable)view;
+        }
     }
 
     @Override
@@ -131,11 +214,19 @@ public class StateListView extends LinearLayout implements ContentStates
 
     public View getEmptyStateView()
     {
-        return emptyStateView;
+        if (emptyStateView != null)
+        {
+            return (View)emptyStateView;
+        }
+        return emptyView;
     }
 
     public View getErrorStateView()
     {
-        return errorStateView;
+        if (errorStateView != null)
+        {
+            return (View)errorStateView;
+        }
+        return errorView;
     }
 }
