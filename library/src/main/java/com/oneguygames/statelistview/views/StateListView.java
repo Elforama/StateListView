@@ -38,8 +38,8 @@ public class StateListView extends LinearLayout implements ContentStates
     private View emptyView;
     private View errorView;
 
-    private Controllable emptyStateView;
-    private Controllable errorStateView;
+    private Controllable emptyStateController;
+    private Controllable errorStateController;
 
     public StateListView(Context context)
     {
@@ -81,7 +81,9 @@ public class StateListView extends LinearLayout implements ContentStates
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        contentRefreshLayout.setEnabled(false);
+        contentRefreshLayout.setEnabled(true);
+        errorRefreshLayout.setEnabled(true);
+        emptyRefreshLayout.setEnabled(true);
     }
 
     private void setupStates(TypedArray attributes)
@@ -95,31 +97,39 @@ public class StateListView extends LinearLayout implements ContentStates
 
             if (emptyView instanceof Controllable)
             {
-                emptyStateView = (Controllable)emptyView;
+                emptyStateController = (Controllable)emptyView;
             }
         }
         else
         {
-            emptyStateView = new StateView(getContext());
-            emptyStateContainer.addView((View)emptyStateView);
+            emptyStateController = new StateView(getContext());
+            emptyStateContainer.addView((View) emptyStateController);
         }
 
-//        int errorStateLayoutId = attributes.getResourceId(R.styleable.StateListView_error_state_view, R.layout.default_error_state_view);
-//
-//        errorView = inflate(getContext(), errorStateLayoutId, null);
-//        errorStateContainer.addView(errorView);
-//
-//        if (errorStateLayoutId != R.layout.default_error_state_view)
-//        {
-//            isCustomErrroState = true;
-//        }
+        int errorStateLayoutId = attributes.getResourceId(R.styleable.StateListView_error_state_view, R.layout.default_empty_state_view);
+
+        if (errorStateLayoutId != R.layout.default_empty_state_view)
+        {
+            errorView = inflate(getContext(), emptyStateLayoutId, null);
+            errorStateContainer.addView(errorView);
+
+            if (errorView instanceof Controllable)
+            {
+                errorStateController = (Controllable)errorView;
+            }
+        }
+        else
+        {
+            errorStateController = new StateView(getContext());
+            errorStateContainer.addView((View) errorStateController);
+        }
     }
 
     public void setEmptyStateMessage(String message)
     {
-        if (emptyStateView != null)
+        if (emptyStateController != null)
         {
-            emptyStateView.setMessage(message);
+            emptyStateController.setMessage(message);
         }
         else
         {
@@ -129,9 +139,9 @@ public class StateListView extends LinearLayout implements ContentStates
 
     public void setEmptyStateImage(int drawableRes)
     {
-        if (emptyStateView != null)
+        if (emptyStateController != null)
         {
-            emptyStateView.setImage(drawableRes);
+            emptyStateController.setImage(drawableRes);
         }
         else
         {
@@ -141,9 +151,45 @@ public class StateListView extends LinearLayout implements ContentStates
 
     public void setEmptyStateOnClick(OnClickListener onClickListener)
     {
-        if (emptyStateView != null)
+        if (emptyStateController != null)
         {
-            emptyStateView.setClickListener(onClickListener);
+            emptyStateController.setClickListener(onClickListener);
+        }
+        else
+        {
+            Log.e(TAG, "Can not set a click listener, empty state view doesn't implement Controllable");
+        }
+    }
+
+    public void setErrorStateMessage(String message)
+    {
+        if (errorStateController != null)
+        {
+            errorStateController.setMessage(message);
+        }
+        else
+        {
+            Log.e(TAG, "Can not set message, empty state view doesn't implement Controllable");
+        }
+    }
+
+    public void setErrorStateImage(int drawableRes)
+    {
+        if (errorStateController != null)
+        {
+            errorStateController.setImage(drawableRes);
+        }
+        else
+        {
+            Log.e(TAG, "Can not set image, empty state view doesn't implement Controllable");
+        }
+    }
+
+    public void setErrorStateOnClick(OnClickListener onClickListener)
+    {
+        if (errorStateController != null)
+        {
+            errorStateController.setClickListener(onClickListener);
         }
         else
         {
@@ -162,7 +208,22 @@ public class StateListView extends LinearLayout implements ContentStates
 
         if (view instanceof Controllable)
         {
-            emptyStateView = (Controllable)view;
+            emptyStateController = (Controllable)view;
+        }
+    }
+
+    public void setErrorStateView(View view)
+    {
+        if (errorStateContainer.getChildCount() != 0)
+        {
+            errorStateContainer.removeAllViews();
+        }
+
+        errorStateContainer.addView(view);
+
+        if (view instanceof Controllable)
+        {
+            errorStateController = (Controllable)view;
         }
     }
 
@@ -212,20 +273,20 @@ public class StateListView extends LinearLayout implements ContentStates
         return recyclerView;
     }
 
-    public View getEmptyStateView()
+    public View getEmptyStateController()
     {
-        if (emptyStateView != null)
+        if (emptyStateController != null)
         {
-            return (View)emptyStateView;
+            return (View) emptyStateController;
         }
         return emptyView;
     }
 
-    public View getErrorStateView()
+    public View getErrorStateController()
     {
-        if (errorStateView != null)
+        if (errorStateController != null)
         {
-            return (View)errorStateView;
+            return (View) errorStateController;
         }
         return errorView;
     }
