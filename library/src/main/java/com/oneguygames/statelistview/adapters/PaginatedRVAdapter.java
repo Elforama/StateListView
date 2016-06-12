@@ -218,6 +218,39 @@ public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<Recycle
         return (hasHeader && !isHeader(position)) ? position - 1 : position;
     }
 
+    private void setContentState(List<T> newData)
+    {
+        if (data.isEmpty())
+        {
+            if (newData == null || newData.isEmpty())
+            {
+                if (listener != null)
+                {
+                    listener.onShowEmpty();
+                }
+
+                if (newData == null)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                if (listener != null)
+                {
+                    listener.onShowContent();
+                }
+            }
+        }
+        else
+        {
+            if (listener != null)
+            {
+                listener.onShowContent();
+            }
+        }
+    }
+
     //============================================================
     // Public Methods
     //============================================================
@@ -253,35 +286,7 @@ public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<Recycle
 
     public void setData(List<T> newData)
     {
-//        if (data.isEmpty())
-//        {
-//            if (newData == null || newData.isEmpty())
-//            {
-//                if (listener != null)
-//                {
-//                    listener.onShowEmpty();
-//                }
-//
-//                if (newData == null)
-//                {
-//                    return;
-//                }
-//            }
-//            else
-//            {
-//                if (listener != null)
-//                {
-//                    listener.onShowContent();
-//                }
-//            }
-//        }
-//        else
-//        {
-//            if (listener != null)
-//            {
-//                listener.onShowContent();
-//            }
-//        }
+        setContentState(newData);
 
         if (isShowingProgressBar)
         {
@@ -297,39 +302,11 @@ public abstract class PaginatedRVAdapter<T> extends RecyclerView.Adapter<Recycle
 
     public void addData(List<T> newData)
     {
-//        if (data.isEmpty())
-//        {
-//            if (newData == null || newData.isEmpty())
-//            {
-//                if (listener != null)
-//                {
-//                    listener.onShowEmpty();
-//                }
-//
-//                if (newData == null)
-//                {
-//                    return;
-//                }
-//            }
-//            else
-//            {
-//                if (listener != null)
-//                {
-//                    listener.onShowContent();
-//                }
-//            }
-//        }
-//        else
-//        {
-//            if (listener != null)
-//            {
-//                listener.onShowContent();
-//            }
-//        }
+        setContentState(newData);
 
         if (isShowingProgressBar)
         {
-            notifyItemRemoved(getItemCount());
+//            notifyItemRemoved(getItemCount());
             isShowingProgressBar = false;
         }
 

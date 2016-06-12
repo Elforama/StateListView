@@ -123,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
     {
         Log.d(TAG, "onUpdateView() called with: " + "data = [" + data + "]");
         adapter.addData(data);
-        if (adapter.getItemCount() < 30)
         stateListView.onShowContent();
     }
 

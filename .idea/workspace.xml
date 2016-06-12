@@ -9,18 +9,11 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edecea99-34d1-494d-81e7-72d3397bc87f" name="Default" comment="Add custom view methods">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/butterknife_8_0_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/butterknife_8_0_1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_v4_22_2_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_v4_22_2_1.xml" />
+    <list default="true" id="edecea99-34d1-494d-81e7-72d3397bc87f" name="Default" comment="Updated statelistview with viewflipper to manage view changes, allowing for animations">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/example.iml" afterPath="$PROJECT_DIR$/example/example.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/src/main/java/com/oneguygames/example/FakeDataPresenter.java" afterPath="$PROJECT_DIR$/example/src/main/java/com/oneguygames/example/FakeDataPresenter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/src/main/java/com/oneguygames/example/MainActivity.java" afterPath="$PROJECT_DIR$/example/src/main/java/com/oneguygames/example/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/library.iml" afterPath="$PROJECT_DIR$/library/library.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/adapters/PaginatedRVAdapter.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/adapters/PaginatedRVAdapter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/views/StateListView.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/views/StateListView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/src/main/res/layout/state_list_view.xml" afterPath="$PROJECT_DIR$/library/src/main/res/layout/state_list_view.xml" />
     </list>
     <ignored path="StateListView.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -51,35 +44,9 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/example/src/main/java/com/oneguygames/example/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33333334">
-              <caret line="103" column="13" selection-start-line="103" selection-start-column="13" selection-end-line="103" selection-end-column="13" />
+            <state vertical-scroll-proportion="-0.53474903">
+              <caret line="77" column="24" selection-start-line="77" selection-start-column="24" selection-end-line="77" selection-end-column="24" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FakeDataPresenter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/example/src/main/java/com/oneguygames/example/FakeDataPresenter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="50" column="5" selection-start-line="50" selection-start-column="5" selection-end-line="50" selection-end-column="5" />
-              <folding>
-                <element signature="e#771#1130#0" expanded="true" />
-                <element signature="e#1129#1130#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StateListView.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/views/StateListView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="121" column="12" selection-start-line="121" selection-start-column="12" selection-end-line="121" selection-end-column="12" />
-              <folding>
-                <element signature="e#5094#5095#0" expanded="true" />
-                <element signature="e#5145#5146#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -88,25 +55,14 @@
         <entry file="file://$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/adapters/PaginatedRVAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="327" column="11" selection-start-line="299" selection-start-column="10" selection-end-line="327" selection-end-column="11" />
+              <caret line="267" column="16" selection-start-line="267" selection-start-column="16" selection-end-line="267" selection-end-column="16" />
               <folding>
-                <element signature="e#7430#7431#0" expanded="true" />
-                <element signature="e#7477#7478#0" expanded="true" />
+                <element signature="e#8145#8146#0" expanded="true" />
+                <element signature="e#8192#8193#0" expanded="true" />
+                <element signature="e#8381#8382#0" expanded="true" />
+                <element signature="e#8423#8424#0" expanded="true" />
               </folding>
             </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="state_list_view.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/library/src/main/res/layout/state_list_view.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.6226416">
-              <caret line="68" column="0" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
           </provider>
         </entry>
       </file>
@@ -2763,8 +2719,8 @@
         <option value="$PROJECT_DIR$/library/src/main/res/layout/state_list_view.xml" />
         <option value="$PROJECT_DIR$/example/src/main/java/com/oneguygames/example/FakeDataPresenter.java" />
         <option value="$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/views/StateListView.java" />
-        <option value="$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/adapters/PaginatedRVAdapter.java" />
         <option value="$PROJECT_DIR$/example/src/main/java/com/oneguygames/example/MainActivity.java" />
+        <option value="$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/adapters/PaginatedRVAdapter.java" />
       </list>
     </option>
   </component>
@@ -3522,7 +3478,13 @@
       <option name="project" value="LOCAL" />
       <updated>1462657426079</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Updated statelistview with viewflipper to manage view changes, allowing for animations">
+      <created>1465697248202</created>
+      <option name="number" value="00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1465697248202</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -3535,7 +3497,7 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17530319" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30099228" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297568" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296582" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2681638" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -3549,7 +3511,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3989432" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39801544" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -3586,12 +3548,63 @@
     <MESSAGE value="Perform code cleanup" />
     <MESSAGE value="Add custom view that implement Controllable interface" />
     <MESSAGE value="Add custom view methods" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add custom view methods" />
+    <MESSAGE value="Updated statelistview with viewflipper to manage view changes, allowing for animations" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated statelistview with viewflipper to manage view changes, allowing for animations" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="29" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/adapters/PaginatedRVAdapter.java</url>
+          <line>156</line>
+          <properties />
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/adapters/PaginatedRVAdapter.java</url>
+          <line>112</line>
+          <properties />
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/adapters/PaginatedRVAdapter.java</url>
+          <line>105</line>
+          <properties />
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/adapters/PaginatedRVAdapter.java</url>
+          <line>288</line>
+          <properties />
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/adapters/PaginatedRVAdapter.java</url>
+          <line>304</line>
+          <properties />
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/adapters/PaginatedRVAdapter.java</url>
+          <line>133</line>
+          <properties />
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/adapters/PaginatedRVAdapter.java</url>
+          <line>137</line>
+          <properties />
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/adapters/PaginatedRVAdapter.java</url>
+          <line>142</line>
+          <properties />
+          <option name="timeStamp" value="38" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="39" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -3629,8 +3642,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#5094#5095#0" expanded="true" />
-            <element signature="e#5145#5146#0" expanded="true" />
+            <element signature="e#5814#5815#0" expanded="true" />
+            <element signature="e#5865#5866#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -3678,8 +3691,8 @@
             <element signature="imports" expanded="false" />
             <element signature="e#5661#6197#0" expanded="false" />
             <element signature="e#6196#6197#0" expanded="false" />
-            <element signature="e#7430#7431#0" expanded="true" />
-            <element signature="e#7477#7478#0" expanded="true" />
+            <element signature="e#8145#8146#0" expanded="true" />
+            <element signature="e#8192#8193#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -3700,8 +3713,8 @@
             <element signature="imports" expanded="false" />
             <element signature="e#5661#6197#0" expanded="false" />
             <element signature="e#6196#6197#0" expanded="false" />
-            <element signature="e#7430#7431#0" expanded="true" />
-            <element signature="e#7477#7478#0" expanded="true" />
+            <element signature="e#8145#8146#0" expanded="true" />
+            <element signature="e#8192#8193#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -3711,8 +3724,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#5094#5095#0" expanded="true" />
-            <element signature="e#5145#5146#0" expanded="true" />
+            <element signature="e#5814#5815#0" expanded="true" />
+            <element signature="e#5865#5866#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -3722,8 +3735,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="80" column="47" selection-start-line="80" selection-start-column="47" selection-end-line="80" selection-end-column="47" />
           <folding>
-            <element signature="e#5094#5095#0" expanded="true" />
-            <element signature="e#5145#5146#0" expanded="true" />
+            <element signature="e#5814#5815#0" expanded="true" />
+            <element signature="e#5865#5866#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -3736,8 +3749,8 @@
             <element signature="imports" expanded="false" />
             <element signature="e#5661#6197#0" expanded="false" />
             <element signature="e#6196#6197#0" expanded="false" />
-            <element signature="e#7430#7431#0" expanded="true" />
-            <element signature="e#7477#7478#0" expanded="true" />
+            <element signature="e#8145#8146#0" expanded="true" />
+            <element signature="e#8192#8193#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -3757,8 +3770,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#5094#5095#0" expanded="true" />
-            <element signature="e#5145#5146#0" expanded="true" />
+            <element signature="e#5814#5815#0" expanded="true" />
+            <element signature="e#5865#5866#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -4028,10 +4041,21 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/views/StateListView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="44" column="36" selection-start-line="44" selection-start-column="36" selection-end-line="44" selection-end-column="36" />
+          <folding>
+            <element signature="e#5814#5815#0" expanded="true" />
+            <element signature="e#5865#5866#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/library/src/main/res/layout/state_list_view.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.6226416">
-          <caret line="68" column="0" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
+        <state vertical-scroll-proportion="-3.3584905">
+          <caret line="50" column="61" selection-start-line="50" selection-start-column="61" selection-end-line="50" selection-end-column="61" />
           <folding />
         </state>
       </provider>
@@ -4039,20 +4063,9 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/views/StateListView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="121" column="12" selection-start-line="121" selection-start-column="12" selection-end-line="121" selection-end-column="12" />
-          <folding>
-            <element signature="e#5094#5095#0" expanded="true" />
-            <element signature="e#5145#5146#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/example/src/main/java/com/oneguygames/example/FakeDataPresenter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.9555985">
           <caret line="50" column="5" selection-start-line="50" selection-start-column="5" selection-end-line="50" selection-end-column="5" />
           <folding>
             <element signature="e#771#1130#0" expanded="true" />
@@ -4064,18 +4077,20 @@
     <entry file="file://$PROJECT_DIR$/library/src/main/java/com/oneguygames/statelistview/adapters/PaginatedRVAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="327" column="11" selection-start-line="299" selection-start-column="10" selection-end-line="327" selection-end-column="11" />
+          <caret line="267" column="16" selection-start-line="267" selection-start-column="16" selection-end-line="267" selection-end-column="16" />
           <folding>
-            <element signature="e#7430#7431#0" expanded="true" />
-            <element signature="e#7477#7478#0" expanded="true" />
+            <element signature="e#8145#8146#0" expanded="true" />
+            <element signature="e#8192#8193#0" expanded="true" />
+            <element signature="e#8381#8382#0" expanded="true" />
+            <element signature="e#8423#8424#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/example/src/main/java/com/oneguygames/example/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="103" column="13" selection-start-line="103" selection-start-column="13" selection-end-line="103" selection-end-column="13" />
+        <state vertical-scroll-proportion="-0.53474903">
+          <caret line="77" column="24" selection-start-line="77" selection-start-column="24" selection-end-line="77" selection-end-column="24" />
           <folding />
         </state>
       </provider>

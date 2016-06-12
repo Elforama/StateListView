@@ -23,12 +23,17 @@ import com.oneguygames.statelistview.interfaces.Controllable;
  */
 public class StateListView extends LinearLayout implements ContentStates
 {
+    //========================================================================
+    // Class Variables
+    //========================================================================
+
     private static final String TAG = "StateListView";
 
-    private static int progressIndex;
-    private static int contentIndex;
-    private static int emptyIndex;
-    private static int errorIndex;
+    private int progressIndex;
+    private int contentIndex;
+    private int emptyIndex;
+    private int errorIndex;
+    private int currentIndex;
 
     private ViewFlipper viewFlipper;
 
@@ -50,6 +55,10 @@ public class StateListView extends LinearLayout implements ContentStates
     private Controllable emptyStateController;
     private Controllable errorStateController;
 
+    //========================================================================
+    // Constructors
+    //========================================================================
+
     public StateListView(Context context)
     {
         super(context);
@@ -67,6 +76,10 @@ public class StateListView extends LinearLayout implements ContentStates
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
+
+    //========================================================================
+    // Initialization methods
+    //========================================================================
 
     private void init(Context context, AttributeSet attrs)
     {
@@ -102,6 +115,8 @@ public class StateListView extends LinearLayout implements ContentStates
         errorIndex = viewFlipper.indexOfChild(errorRefreshLayout);
 
         viewFlipper.setInAnimation(getContext(), R.anim.abc_fade_in);
+
+        onShowContent();
     }
 
     private void setupStates(TypedArray attributes)
@@ -143,10 +158,18 @@ public class StateListView extends LinearLayout implements ContentStates
         }
     }
 
+    //========================================================================
+    // Animation Methods
+    //========================================================================
+
     public void setAnimation(Animation animation)
     {
         viewFlipper.setAnimation(animation);
     }
+
+    //========================================================================
+    // Empty State Methods
+    //========================================================================
 
     public void setEmptyStateMessage(String message)
     {
@@ -183,6 +206,10 @@ public class StateListView extends LinearLayout implements ContentStates
             Log.e(TAG, "Can not set a click listener, empty state view doesn't implement Controllable");
         }
     }
+
+    //========================================================================
+    // Error State Methods
+    //========================================================================
 
     public void setErrorStateMessage(String message)
     {
@@ -250,44 +277,48 @@ public class StateListView extends LinearLayout implements ContentStates
         }
     }
 
+    //========================================================================
+    // ContentStates Implementation
+    //========================================================================
+
     @Override
     public void onShowLoading()
     {
-        viewFlipper.setDisplayedChild(progressIndex);
-//        progressLayout.setVisibility(VISIBLE);
-//        contentRefreshLayout.setVisibility(GONE);
-//        emptyRefreshLayout.setVisibility(GONE);
-//        errorRefreshLayout.setVisibility(GONE);
+        if (currentIndex != progressIndex)
+        {
+            viewFlipper.setDisplayedChild(progressIndex);
+            currentIndex = progressIndex;
+        }
     }
 
     @Override
     public void onShowContent()
     {
-        viewFlipper.setDisplayedChild(contentIndex);
-//        progressLayout.setVisibility(GONE);
-//        contentRefreshLayout.setVisibility(VISIBLE);
-//        emptyRefreshLayout.setVisibility(GONE);
-//        errorRefreshLayout.setVisibility(GONE);
+        if (currentIndex != contentIndex)
+        {
+            viewFlipper.setDisplayedChild(contentIndex);
+            currentIndex = contentIndex;
+        }
     }
 
     @Override
     public void onShowEmpty()
     {
-        viewFlipper.setDisplayedChild(emptyIndex);
-//        progressLayout.setVisibility(GONE);
-//        contentRefreshLayout.setVisibility(GONE);
-//        emptyRefreshLayout.setVisibility(VISIBLE);
-//        errorRefreshLayout.setVisibility(GONE);
+        if (currentIndex != emptyIndex)
+        {
+            viewFlipper.setDisplayedChild(emptyIndex);
+            currentIndex = emptyIndex;
+        }
     }
 
     @Override
     public void onShowError()
     {
-        viewFlipper.setDisplayedChild(errorIndex);
-//        progressLayout.setVisibility(GONE);
-//        contentRefreshLayout.setVisibility(GONE);
-//        emptyRefreshLayout.setVisibility(GONE);
-//        errorRefreshLayout.setVisibility(VISIBLE);
+        if (currentIndex != errorIndex)
+        {
+            viewFlipper.setDisplayedChild(errorIndex);
+            currentIndex = errorIndex;
+        }
     }
 
     public void setAdapter(RecyclerView.Adapter adapter)
