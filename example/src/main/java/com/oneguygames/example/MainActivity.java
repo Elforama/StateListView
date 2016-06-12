@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
             presenter = new FakeDataPresenter();
         }
 
-        adapter = new PaginatedRVAdapter<String>(presenter, stateListView.getRecyclerView(), stateListView)
+        adapter = new PaginatedRVAdapter<String>(stateListView.getRecyclerView(), presenter)
         {
             @Override
             public RecyclerView.ViewHolder onCreateCustomViewHolder(ViewGroup parent, int viewType)
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
         });
 
         adapter.enableHeader(true);
-        stateListView.setEmptyStateController(new CustomView(this));
+        stateListView.setEmptyStateView(new CustomView(this));
         stateListView.setAdapter(adapter);
         presenter.onLoadPage();
 
@@ -123,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements FakeDataPresenter
     {
         Log.d(TAG, "onUpdateView() called with: " + "data = [" + data + "]");
         adapter.addData(data);
+        if (adapter.getItemCount() < 30)
+        stateListView.onShowContent();
     }
 
     @Override

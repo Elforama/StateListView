@@ -8,9 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ViewFlipper;
 
 import com.oneguygames.statelistview.R;
 import com.oneguygames.statelistview.interfaces.ContentStates;
@@ -22,6 +24,13 @@ import com.oneguygames.statelistview.interfaces.Controllable;
 public class StateListView extends LinearLayout implements ContentStates
 {
     private static final String TAG = "StateListView";
+
+    private static int progressIndex;
+    private static int contentIndex;
+    private static int emptyIndex;
+    private static int errorIndex;
+
+    private ViewFlipper viewFlipper;
 
     private SwipeRefreshLayout contentRefreshLayout;
     private SwipeRefreshLayout emptyRefreshLayout;
@@ -63,6 +72,8 @@ public class StateListView extends LinearLayout implements ContentStates
     {
         View view = inflate(getContext(), R.layout.state_list_view, this);
 
+        viewFlipper = (ViewFlipper) view.findViewById(R.id.adapterViewFlipper);
+
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         contentRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.content_refresh_layout);
@@ -84,6 +95,13 @@ public class StateListView extends LinearLayout implements ContentStates
         contentRefreshLayout.setEnabled(true);
         errorRefreshLayout.setEnabled(true);
         emptyRefreshLayout.setEnabled(true);
+
+        progressIndex = viewFlipper.indexOfChild(progressLayout);
+        contentIndex = viewFlipper.indexOfChild(contentRefreshLayout);
+        emptyIndex = viewFlipper.indexOfChild(emptyRefreshLayout);
+        errorIndex = viewFlipper.indexOfChild(errorRefreshLayout);
+
+        viewFlipper.setInAnimation(getContext(), R.anim.abc_fade_in);
     }
 
     private void setupStates(TypedArray attributes)
@@ -110,7 +128,7 @@ public class StateListView extends LinearLayout implements ContentStates
 
         if (errorStateLayoutId != R.layout.default_empty_state_view)
         {
-            errorView = inflate(getContext(), emptyStateLayoutId, null);
+            errorView = inflate(getContext(), errorStateLayoutId, null);
             errorStateContainer.addView(errorView);
 
             if (errorView instanceof Controllable)
@@ -123,6 +141,11 @@ public class StateListView extends LinearLayout implements ContentStates
             errorStateController = new StateView(getContext());
             errorStateContainer.addView((View) errorStateController);
         }
+    }
+
+    public void setAnimation(Animation animation)
+    {
+        viewFlipper.setAnimation(animation);
     }
 
     public void setEmptyStateMessage(String message)
@@ -230,37 +253,41 @@ public class StateListView extends LinearLayout implements ContentStates
     @Override
     public void onShowLoading()
     {
-        progressLayout.setVisibility(VISIBLE);
-        contentRefreshLayout.setVisibility(GONE);
-        emptyRefreshLayout.setVisibility(GONE);
-        errorRefreshLayout.setVisibility(GONE);
+        viewFlipper.setDisplayedChild(progressIndex);
+//        progressLayout.setVisibility(VISIBLE);
+//        contentRefreshLayout.setVisibility(GONE);
+//        emptyRefreshLayout.setVisibility(GONE);
+//        errorRefreshLayout.setVisibility(GONE);
     }
 
     @Override
     public void onShowContent()
     {
-        progressLayout.setVisibility(GONE);
-        contentRefreshLayout.setVisibility(VISIBLE);
-        emptyRefreshLayout.setVisibility(GONE);
-        errorRefreshLayout.setVisibility(GONE);
+        viewFlipper.setDisplayedChild(contentIndex);
+//        progressLayout.setVisibility(GONE);
+//        contentRefreshLayout.setVisibility(VISIBLE);
+//        emptyRefreshLayout.setVisibility(GONE);
+//        errorRefreshLayout.setVisibility(GONE);
     }
 
     @Override
     public void onShowEmpty()
     {
-        progressLayout.setVisibility(GONE);
-        contentRefreshLayout.setVisibility(GONE);
-        emptyRefreshLayout.setVisibility(VISIBLE);
-        errorRefreshLayout.setVisibility(GONE);
+        viewFlipper.setDisplayedChild(emptyIndex);
+//        progressLayout.setVisibility(GONE);
+//        contentRefreshLayout.setVisibility(GONE);
+//        emptyRefreshLayout.setVisibility(VISIBLE);
+//        errorRefreshLayout.setVisibility(GONE);
     }
 
     @Override
     public void onShowError()
     {
-        progressLayout.setVisibility(GONE);
-        contentRefreshLayout.setVisibility(GONE);
-        emptyRefreshLayout.setVisibility(GONE);
-        errorRefreshLayout.setVisibility(VISIBLE);
+        viewFlipper.setDisplayedChild(errorIndex);
+//        progressLayout.setVisibility(GONE);
+//        contentRefreshLayout.setVisibility(GONE);
+//        emptyRefreshLayout.setVisibility(GONE);
+//        errorRefreshLayout.setVisibility(VISIBLE);
     }
 
     public void setAdapter(RecyclerView.Adapter adapter)

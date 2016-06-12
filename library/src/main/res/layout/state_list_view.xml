@@ -6,58 +6,65 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/loading_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        tools:visibility="gone">
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            />
-
-    </LinearLayout>
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/content_refresh_layout"
+    <ViewFlipper
+        android:id="@+id/adapterViewFlipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <LinearLayout
+            android:id="@+id/loading_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:gravity="center"
+            tools:visibility="gone">
 
-    </android.support.v4.widget.SwipeRefreshLayout>
-    
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/empty_refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:visibility="gone">
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                />
 
-        <FrameLayout
-            android:id="@+id/empty_state_container"
+        </LinearLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/content_refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></FrameLayout>
+            android:layout_height="match_parent">
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/error_refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:visibility="gone">
+        </android.support.v4.widget.SwipeRefreshLayout>
 
-        <FrameLayout
-            android:id="@+id/error_state_container"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/empty_refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></FrameLayout>
+            android:layout_height="match_parent"
+            tools:visibility="gone">
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+            <FrameLayout
+                android:id="@+id/empty_state_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></FrameLayout>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/error_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:visibility="gone">
+
+            <FrameLayout
+                android:id="@+id/error_state_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></FrameLayout>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </ViewFlipper>
 
 </RelativeLayout>
